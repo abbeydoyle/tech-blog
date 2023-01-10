@@ -36,6 +36,7 @@ User.init(
                   allowNull: false,
                   validate: {
                     len: [8,32],
+                    // TODO: double check regex works
                     is: ["^[a-z]+$",'i'],
                   },
             }
