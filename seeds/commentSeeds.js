@@ -1,4 +1,6 @@
-[
+const { Comment } = require('../models');
+
+const commentData = [
       {
             "user_id": 1,
             "post_id": 1,
@@ -29,3 +31,12 @@
             "comment_body": "looks like this was sourced from a trustworthy sight, doesn't look faulty"
       }
 ]
+
+const seedComments = () =>
+
+      Comment.bulkCreate(commentData, {
+            individualHooks: true,
+            returning: true,
+      });
+
+module.exports = seedComments;
