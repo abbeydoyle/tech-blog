@@ -1,5 +1,10 @@
-// TODO: MAKE CONTROLLERS API IndexHints.JS
+const router = require('express').Router();
+const userRoutes = require('./userRoutes');
+const postRoutes = require('./postRoutes');
+const commentRoutes = require('./commentRoutes');
 
-// TODO: MAKE ALL CONTROLLER APIS
+router.use('/user', userRoutes);
+router.use('/post', postRoutes);
+router.use('/comment', commentRoutes);
 
-// TODO: POST, COMMENT, USER APIS
+module.exports = router;
