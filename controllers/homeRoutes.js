@@ -1,4 +1,9 @@
 // TODO: routes for homepage
+const router = require('express').Router();
+const sequelize = require('../config/connection');
+const { User, Post, Comment } = require('../models');
+const withAuth = require('../utils/auth');
+
 
 router.get('/', (req, res) => {
       Post.findAll({
@@ -112,3 +117,5 @@ router.get('/post/:id', (req, res) => {
           res.status(500).json(err);
         });
 });
+
+module.exports = router;
