@@ -1,4 +1,6 @@
+// needed for database
 const Sequelize = require('sequelize');
+// environment username and password variables
 require('dotenv').config();
 
 let sequelize;

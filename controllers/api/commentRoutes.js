@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
+// get route to return all comments
 router.get('/', async (req, res) => {
       try {
         const commentData = await Comment.findAll({});
@@ -18,6 +19,7 @@ router.get('/', async (req, res) => {
       }
 });
 
+// get route for single comment
 router.get('/:id', async (req, res) => {
 try {
       const commentData = await Comment.findOne({
@@ -32,11 +34,12 @@ try {
       }
       // res.status(200).json(commentData.reverse());
       res.status(200).json(commentData);
-} catch (err) {
-      res.status(400).json(err);
-}
+      } catch (err) {
+            res.status(400).json(err);
+      }
 });
 
+// post route to create new comment
 router.post('/', withAuth, async (req, res) => {
       try {
             const newComment = await Comment.create({
@@ -50,16 +53,17 @@ router.post('/', withAuth, async (req, res) => {
       }
 });
 
+// put route to update comment
 router.put('/:id', withAuth, async (req, res) => {
       try {
             const updatedComment = await Comment.update(
                   {
-                  comment_body: req.body.comment_body,
+                        comment_body: req.body.comment_body,
                   },
                   {
-                  where: {
-                        id: req.params.id,
-                  },
+                        where: {
+                              id: req.params.id,
+                        },
                   }
             );
             if (!updatedComment) {
@@ -77,6 +81,7 @@ router.put('/:id', withAuth, async (req, res) => {
       }
 });
 
+//delete route with matching id
 router.delete('/:id', withAuth, async (req, res) => {
       try {
             const commentData = await Comment.destroy({

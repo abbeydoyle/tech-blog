@@ -1,10 +1,9 @@
-// TODO: routes for homepage
 const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { User, Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-
+// get route to return homepage
 router.get('/', (req, res) => {
       Post.findAll({
 
@@ -31,7 +30,6 @@ router.get('/', (req, res) => {
               }
           ]
       })
-
       .then(dbPostData => {
 
         const posts = dbPostData.map(post => post.get({ plain: true }));
@@ -42,13 +40,13 @@ router.get('/', (req, res) => {
           username: req.session.username,
         });
       })
-
       .catch(err => {
           console.log(err);
           res.status(500).json(err);
       });
 });
 
+// get route for signup page
 router.get('/signup', (req, res) => {
       if (req.session.loggedIn) {
         res.redirect('/');
@@ -58,6 +56,7 @@ router.get('/signup', (req, res) => {
       res.render('signup');
 });
 
+// get route for login page
 router.get('/login', (req, res) => {
       if (req.session.loggedIn) {
         res.redirect('/');
@@ -66,7 +65,8 @@ router.get('/login', (req, res) => {
 
       res.render('login');
 });
-  
+
+// get route for single post with matching id
 router.get('/post/:id', (req, res) => {
       Post.findOne({
 
@@ -96,26 +96,26 @@ router.get('/post/:id', (req, res) => {
           }
         ]
       })
-        .then(dbPostData => {
+      .then(dbPostData => {
 
-          if (!dbPostData) {
-            res.status(404).json({ message: 'No post found with this id' });
-            return;
-          }
+        if (!dbPostData) {
+          res.status(404).json({ message: 'No post found with this id' });
+          return;
+        }
 
-          const post = dbPostData.get({ plain: true });
+        const post = dbPostData.get({ plain: true });
 
-          res.render('single-post', {
-              post,
-              loggedIn: req.session.loggedIn,
-              username: req.session.username,
-            });
-        })
-        .catch(err => {
+        res.render('single-post', {
+            post,
+            loggedIn: req.session.loggedIn,
+            username: req.session.username,
+          });
+      })
+      .catch(err => {
 
-          console.log(err);
-          res.status(500).json(err);
-        });
+        console.log(err);
+        res.status(500).json(err);
+      });
 });
 
 module.exports = router;

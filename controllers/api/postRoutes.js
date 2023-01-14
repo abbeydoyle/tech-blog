@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
+// get route for all posts
 router.get('/', async (req, res) => {
       try {
         const postData = await Post.findAll({
@@ -28,6 +29,7 @@ router.get('/', async (req, res) => {
       }
 });
 
+// get route for one post matching id
 router.get('/:id', async (req, res) => {
       try {
             const postData = await Post.findOne({
@@ -62,6 +64,7 @@ router.get('/:id', async (req, res) => {
       }
 });
 
+// post route to create mew post
 router.post('/', withAuth, async (req, res) => {
       try {
             const newPost = await Post.create({
@@ -74,6 +77,7 @@ router.post('/', withAuth, async (req, res) => {
       }
 });
 
+// put route to update post with matching id
 router.put('/:id', withAuth, async (req, res) => {
       try {
             const updatedPost = await Post.update(
@@ -101,6 +105,7 @@ router.put('/:id', withAuth, async (req, res) => {
       }
 });
 
+// delete route for post with matching id
 router.delete('/:id', withAuth, async (req, res) => {
       try {
             const postData = await Post.destroy({

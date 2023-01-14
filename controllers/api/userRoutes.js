@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
 
+// get route for all users, does not return passwords 
 router.get('/', async (req, res) => {
       try {
         const userData = await User.findAll({
@@ -12,6 +13,7 @@ router.get('/', async (req, res) => {
       }
 });
 
+// get route for single user id
 router.get('/:id', async (req, res) => {
       try {
         const userData = await User.findOne({
@@ -52,6 +54,7 @@ router.get('/:id', async (req, res) => {
       }
 });
 
+//post route to create new user
 router.post('/', async (req, res) => {
       try {
         const userData = await User.create(req.body);
@@ -68,6 +71,7 @@ router.post('/', async (req, res) => {
       }
 });
 
+// post route for existing user login
 router.post('/login', async (req, res) => {
   try {
 //     const userData = await User.findOne({ where: { email: req.body.email } });
@@ -101,6 +105,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// post route for existing user logout
 router.post('/logout', async (req, res) => {
       try {
         if (req.session.logged_in) {

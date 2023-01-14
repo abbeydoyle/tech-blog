@@ -1,10 +1,9 @@
-// TODO: routes for dashboard page
-
 const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { User, Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
+// get route to return dashboard for existing user
 router.get('/', withAuth, (req, res) => {
 
       Post.findAll({
@@ -32,20 +31,21 @@ router.get('/', withAuth, (req, res) => {
           }
         ]
       })
-        .then(dbPostData => {
+      .then(dbPostData => {
 
-          const posts = dbPostData.map(post => post.get({ plain: true }));
-          res.render('dashboard', { posts, loggedIn: true });
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json(err);
-        });
-    });
+        const posts = dbPostData.map(post => post.get({ plain: true }));
+        res.render('dashboard', { posts, loggedIn: true });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+});
   
-
-  router.get('/edit/:id', withAuth, (req, res) => {
+// get route to edit post with matching id from dashboard
+router.get('/edit/:id', withAuth, (req, res) => {
     Post.findOne({
+      
       where: {
         id: req.params.id
       },
@@ -70,47 +70,45 @@ router.get('/', withAuth, (req, res) => {
         }
       ]
     })
-      .then(dbPostData => {
+    .then(dbPostData => {
 
-        if (!dbPostData) {
-          res.status(404).json({ message: 'No post found with this id' });
-          return;
-        }
-
-        const post = dbPostData.get({ plain: true });
-        res.render('edit-post', { post, loggedIn: true });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-      });
-  });
-  
-
-  router.get('/edituser', withAuth, (req, res) => {
-
-    User.findOne({
-
-      attributes: { exclude: ['password'] },
-      where: {
-
-        id: req.session.user_id
+      if (!dbPostData) {
+        res.status(404).json({ message: 'No post found with this id' });
+        return;
       }
+
+      const post = dbPostData.get({ plain: true });
+      res.render('edit-post', { post, loggedIn: true });
     })
-      .then(dbUserData => {
-        if (!dbUserData) {
-          res.status(404).json({ message: 'No user found with this id' });
-          return;
-        }
-
-        const user = dbUserData.get({ plain: true });
-        res.render('edit-user', {user, loggedIn: true});
-      })
-      .catch(err => {
-
-        console.log(err);
-        res.status(500).json(err);
-      })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
     });
+});
   
-  module.exports = router;
+// get route user from dashboard, wont return password
+router.get('/edituser', withAuth, (req, res) => {
+  User.findOne({
+    attributes: { exclude: ['password'] },
+    where: {
+
+      id: req.session.user_id
+    }
+  })
+    .then(dbUserData => {
+      if (!dbUserData) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+
+      const user = dbUserData.get({ plain: true });
+      res.render('edit-user', {user, loggedIn: true});
+    })
+    .catch(err => {
+
+      console.log(err);
+      res.status(500).json(err);
+    })
+  });
+
+module.exports = router;

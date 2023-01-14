@@ -1,8 +1,11 @@
+// database model connection
 const { Model, DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
+// hash passwords
+const bcrypt = require('bcrypt');
 
 class User extends Model {
+  // check environment password to input password
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
@@ -42,14 +45,17 @@ User.init(
             }
       },
 
+      // hooks for hashing password
       {
             hooks: {
+              // check password before user data is created
               beforeCreate: async (newUserData) => {
                 newUserData.password = await bcrypt.hash(newUserData.password, 10);
                 return newUserData;
               },
 
               beforeUpdate: async (updatedUserData) => {
+                // check password before user data is updated
                 updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
                 return updatedUserData;
               },

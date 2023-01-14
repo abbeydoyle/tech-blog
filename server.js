@@ -1,5 +1,3 @@
-// TODO: main server.js
-
 const path = require('path');
 require('dotenv').config();
 const express = require('express');
@@ -12,7 +10,8 @@ const helpers = require('./utils/helpers');
 const hbs = exphbs.create({ helpers });
 
 const sess = {
-    secret: process.env.DB_SESSION_SECRET,
+    // secret: process.env.DB_SESSION_SECRET,
+    secret: "secret",
     cookie: { maxAge: 7200000 },
     resave: false,
     saveUninitialized: true,
@@ -33,5 +32,5 @@ app.use(session(sess));
 app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log('Now listening'));
+    app.listen(PORT, () => console.log('Now listening at port ${PORT}'));
   });

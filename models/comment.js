@@ -1,6 +1,8 @@
+// database model connection
 const { Model, DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
+// hash passwords
+const bcrypt = require('bcrypt');
 
 class Comment extends Model {}
 
