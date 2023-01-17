@@ -8,6 +8,7 @@ const session = require('express-session')
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const helpers = require('./utils/helpers');
 const hbs = exphbs.create({ helpers });
+const chalk = require('chalk');
 
 const sess = {
     // secret: process.env.DB_SESSION_SECRET,
@@ -32,5 +33,5 @@ app.use(session(sess));
 app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log('Now listening at port ${PORT}'));
+    app.listen(PORT, () => console.log(chalk.bgHex('#526b48').white(`Now listening at port ${PORT}`)));
   });
