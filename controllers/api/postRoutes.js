@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
       }
 });
 
+
 // get route for one post matching id
 router.get('/:id', async (req, res) => {
       try {
@@ -68,7 +69,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', withAuth, async (req, res) => {
       try {
             const newPost = await Post.create({
-                  ...req.body,
+                  title: req.body.title,
+                  post_body: req.body.post_body,
                   user_id: req.session.user_id,
             });
             res.status(200).json(newPost);
